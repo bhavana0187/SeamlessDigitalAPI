@@ -26,27 +26,12 @@ namespace Infrastructure.Data.Repositories
         }
 
         public async Task<ToDoItem> GetById(long id)
-        {
-            try
-            {
-                var books = _dbContext.ToDoItems
-                 .Where(p => IsRecommended(p.ToDo))
-                 .ToList();
-            }
-            catch (Exception ex)
-            {
-                string re=ex.Message;
-            }
-
+        {           
             var entity = await _dbContext.Set<ToDoItem>()
                .Include(i => i.Category)              
                .FirstOrDefaultAsync(w => w.Id == id);
             return entity;
 
-        }
-        bool IsRecommended(string title)
-        {
-            return title.StartsWith("A") && title.EndsWith("Z");
         }
 
         public Task<ToDoItem> GetForUpdate(long id)
